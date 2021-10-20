@@ -5,45 +5,27 @@ import 'package:flutter/services.dart';
 class MdInstaFbShare {
   static const MethodChannel _channel = MethodChannel('md_insta_fb_share');
 
-  static Future<String?> shareInstaStory(String backgroundImage, {
-    String? stickerImage,
-    String? backgroundTopColor,
-    String? backgroundBottomColor,
-    String? contentURL
-  }) async {
+  static Future<String?> shareInstaStory(String backgroundImagePath) async {
     return await _channel.invokeMethod('share_insta_story', {
-      "backgroundImage": backgroundImage,
-      "stickerImage": stickerImage,
-      "backgroundTopColor": backgroundTopColor,
-      "backgroundBottomColor": backgroundBottomColor,
-      "contentURL": contentURL
+      "backgroundImage": backgroundImagePath,
     });
   }
 
-  static Future<String?> shareInstaFeed(String backgroundImage) async {
+  static Future<String?> shareInstaFeed(String backgroundImagePath) async {
     return await _channel.invokeMethod('share_insta_feed', {
-      "backgroundImage": backgroundImage
+      "backgroundImage": backgroundImagePath
     });
   }
 
-  static Future<String?> shareFBStory(String backgroundImage, {
-    String? stickerImage,
-    String? backgroundTopColor,
-    String? backgroundBottomColor,
-    String? contentURL
-  }) async {
+  static Future<String?> shareFBStory(String backgroundImagePath) async {
     return await _channel.invokeMethod('share_FB_story', {
-      "backgroundImage": backgroundImage,
-      "stickerImage": stickerImage,
-      "backgroundTopColor": backgroundTopColor,
-      "backgroundBottomColor": backgroundBottomColor,
-      "contentURL": contentURL
+      "backgroundImage": backgroundImagePath
     });
   }
 
-  static Future<String?> shareFBFeed(String image) async {
+  static Future<String?> shareFBFeed(String backgroundImagePath) async {
     return await _channel.invokeMethod('share_FB_feed', {
-      "image": image
+      "backgroundImage": backgroundImagePath
     });
   }
 }

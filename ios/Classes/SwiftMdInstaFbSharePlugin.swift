@@ -14,13 +14,8 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
           let urlScheme = URL(string: "instagram-stories://share")!
           if (UIApplication.shared.canOpenURL(urlScheme)) {
               let backgroundImagePath = args["backgroundImage"] as! String;
-              let stickerImagePath = args["stickerImage"] as? String;
-              let backgroundTopColor = args["backgroundTopColor"] as? String;
-              let backgroundBottomColor = args["backgroundBottomColor"] as? String;
-              let contentURL = args["contentURL"] as? String;
               
               var backgroundImage: UIImage? = nil;
-              var stickerImage: UIImage? = nil;
               let fileManager = FileManager.default;
               
         
@@ -29,19 +24,8 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
                   backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
               }
               
-              if (stickerImagePath != nil) {
-                  let isStickerExist = fileManager.fileExists(atPath: stickerImagePath!);
-                  if (isStickerExist) {
-                      stickerImage =  UIImage(contentsOfFile: stickerImagePath!)!;
-                  }
-              }
-              
               let pasteboardItems = [
-                "com.instagram.sharedSticker.backgroundImage" : (backgroundImage ?? nil) as Any,
-                "com.instagram.sharedSticker.stickerImage": (stickerImage ?? nil) as Any,
-                "com.instagram.sharedSticker.backgroundTopColor": (backgroundTopColor ?? nil) as Any,
-                "com.instagram.sharedSticker.backgroundBottomColor": (backgroundBottomColor ?? nil) as Any,
-                "com.instagram.sharedSticker.contentURL": (contentURL ?? nil) as Any
+                "com.instagram.sharedSticker.backgroundImage" : (backgroundImage ?? nil) as Any
               ] as [String : Any];
               
               if #available(iOS 10.0, *) {
@@ -81,13 +65,8 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
           let urlScheme = URL(string: "facebook-stories://share")!
           if (UIApplication.shared.canOpenURL(urlScheme)) {
               let backgroundImagePath = args["backgroundImage"] as! String;
-              let stickerImagePath = args["stickerImage"] as? String;
-              let backgroundTopColor = args["backgroundTopColor"] as? String;
-              let backgroundBottomColor = args["backgroundBottomColor"] as? String;
-              let contentURL = args["contentURL"] as? String;
               
               var backgroundImage: UIImage? = nil;
-              var stickerImage: UIImage? = nil;
               let fileManager = FileManager.default;
               
         
@@ -96,27 +75,16 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
                   backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
               }
               
-              if (stickerImagePath != nil) {
-                  let isStickerExist = fileManager.fileExists(atPath: stickerImagePath!);
-                  if (isStickerExist) {
-                      stickerImage =  UIImage(contentsOfFile: stickerImagePath!)!;
-                  }
-              }
-              
               let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? String;
               
               if (facebookAppID == nil) {
-                  result("FacebookAppID not srecified in info.plist");
+                  result("FacebookAppID not specified in info.plist");
                   return;
               }
               
               let pasteboardItems = [
-                "com.facebook.sharedSticker.appID": facebookAppID as! String,
                 "com.facebook.sharedSticker.backgroundImage" : (backgroundImage ?? nil) as Any,
-                "com.facebook.sharedSticker.stickerImage": (stickerImage ?? nil) as Any,
-                "com.facebook.sharedSticker.backgroundTopColor": (backgroundTopColor ?? nil) as Any,
-                "com.facebook.sharedSticker.backgroundBottomColor": (backgroundBottomColor ?? nil) as Any,
-                "com.facebook.sharedSticker.contentURL": (contentURL ?? nil) as Any
+                "com.facebook.sharedSticker.appID": facebookAppID!,
               ] as [String : Any];
               
               if #available(iOS 10.0, *) {

@@ -38,19 +38,7 @@ class _MyAppState extends State<MyApp> {
                   final file = await File('$dir/$fileName').writeAsBytes(
                       buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
-                  final stickerData = await rootBundle.load('assets/insta_small.png');
-                  final stickerBuffer = data.buffer;
-                  final stickerFileName = 'insta_small-${DateTime.now().millisecondsSinceEpoch}.png';
-                  final stickerFile = await File('$dir/$stickerFileName').writeAsBytes(
-                      stickerBuffer.asUint8List(stickerData.offsetInBytes, stickerData.lengthInBytes));
-
-                  MdInstaFbShare.shareInstaStory(
-                    file.path,
-                    stickerImage: stickerFile.path,
-                    backgroundTopColor: '#FF0000', // red
-                    backgroundBottomColor: '#2DFF00', // green
-                    contentURL: 'http://google.com'
-                  );
+                  MdInstaFbShare.shareInstaStory(file.path);
                 },
                 child: const Text('Test insta story share')
               ),
@@ -77,20 +65,7 @@ class _MyAppState extends State<MyApp> {
                     final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
                     final file = await File('$dir/$fileName').writeAsBytes(
                         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-
-                    final stickerData = await rootBundle.load('assets/insta_small.png');
-                    final stickerBuffer = data.buffer;
-                    final stickerFileName = 'insta_small-${DateTime.now().millisecondsSinceEpoch}.png';
-                    final stickerFile = await File('$dir/$stickerFileName').writeAsBytes(
-                        stickerBuffer.asUint8List(stickerData.offsetInBytes, stickerData.lengthInBytes));
-
-                    MdInstaFbShare.shareFBStory(
-                        file.path,
-                        stickerImage: stickerFile.path,
-                        backgroundTopColor: '#FF0000', // red
-                        backgroundBottomColor: '#2DFF00', // green
-                        contentURL: 'http://google.com'
-                    );
+                    MdInstaFbShare.shareFBStory(file.path);
                   },
                   child: const Text('Test FB story share')
               ),
