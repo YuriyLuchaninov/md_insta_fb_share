@@ -1,7 +1,8 @@
 import Flutter
 import UIKit
+import FBSDKCoreKit
 
-public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
+public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "md_insta_fb_share", binaryMessenger: registrar.messenger())
     let instance = SwiftMdInstaFbSharePlugin()
@@ -101,6 +102,31 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
           } else {
               result("Can not open FB app");
           }
+      } else if (call.method == "share_FB_feed") {
+          let args = (call.arguments as! NSDictionary)
+          let backgroundImagePath = args["backgroundImage"] as! String;
+          
+          var backgroundImage: UIImage? = nil;
+          let fileManager = FileManager.default;
+          
+          let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
+          if (isBackgroundImageExist) {
+              backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
+          }
+          
+          let photo = SharePhoto(
+              image: backgroundImage!,
+              userGenerated: true
+          );
+          let content = SharePhotoContent();
+          content.photos = [photo];
+          
+          let viewController = UIApplication.shared.delegate?.window??.rootViewController;
+          let shareDialog = ShareDialog()
+          ShareDialog(fromViewController: viewController, content: content, delegate: self).show()
+          
+          shareDialog.mode = .automatic
+          result(nil);
       } else {
           result("Not implemeted");
       }
@@ -137,5 +163,20 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin {
             }
             else { print("Please install the Instagram application") }
         }
+    }
+    
+    //Facebook delegate methods
+    public func sharer(_ sharer: Sharing, didCompleteWithResults results: [String : Any]) {
+        print("Share: Success")
+        
+    }
+    
+    public func sharer(_ sharer: Sharing, didFailWithError error: Error) {
+        print("Share: Fail")
+        
+    }
+    
+    public func sharerDidCancel(_ sharer: Sharing) {
+        print("Share: Cancel")
     }
 }

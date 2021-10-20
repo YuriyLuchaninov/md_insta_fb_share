@@ -69,6 +69,19 @@ class _MyAppState extends State<MyApp> {
                   },
                   child: const Text('Test FB story share')
               ),
+              ElevatedButton(
+                  onPressed: () async {
+                    final dir = (await getTemporaryDirectory()).path;
+
+                    final data = await rootBundle.load('assets/insta_big.png');
+                    final buffer = data.buffer;
+                    final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
+                    final file = await File('$dir/$fileName').writeAsBytes(
+                        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+                    MdInstaFbShare.shareFBFeed(file.path);
+                  },
+                  child: const Text('Test FB feed share')
+              ),
               Image.asset('assets/insta_big.png', width: 150, fit: BoxFit.fitWidth)
             ],
           )
