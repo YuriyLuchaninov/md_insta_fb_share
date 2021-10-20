@@ -34,17 +34,17 @@ class _MyAppState extends State<MyApp> {
 
                   final data = await rootBundle.load('assets/insta_big.png');
                   final buffer = data.buffer;
-                  const fileName = 'insta_big.png';
+                  final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
                   final file = await File('$dir/$fileName').writeAsBytes(
                       buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
                   final stickerData = await rootBundle.load('assets/insta_small.png');
                   final stickerBuffer = data.buffer;
-                  const stickerFileName = 'insta_small.png';
+                  final stickerFileName = 'insta_small-${DateTime.now().millisecondsSinceEpoch}.png';
                   final stickerFile = await File('$dir/$stickerFileName').writeAsBytes(
                       stickerBuffer.asUint8List(stickerData.offsetInBytes, stickerData.lengthInBytes));
 
-                  MdInstaFbShare.shareInsta(
+                  MdInstaFbShare.shareInstaStory(
                     file.path,
                     stickerImage: stickerFile.path,
                     backgroundTopColor: '#FF0000', // red
@@ -52,7 +52,47 @@ class _MyAppState extends State<MyApp> {
                     contentURL: 'http://google.com'
                   );
                 },
-                child: const Text('Test insta share')
+                child: const Text('Test insta story share')
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    final dir = (await getTemporaryDirectory()).path;
+
+                    final data = await rootBundle.load('assets/insta_big.png');
+                    final buffer = data.buffer;
+                    final fileName =  'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
+                    final file = await File('$dir/$fileName').writeAsBytes(
+                        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+
+                    MdInstaFbShare.shareInstaFeed(file.path);
+                  },
+                  child: const Text('Test insta feed share')
+              ),
+              ElevatedButton(
+                  onPressed: () async {
+                    final dir = (await getTemporaryDirectory()).path;
+
+                    final data = await rootBundle.load('assets/insta_big.png');
+                    final buffer = data.buffer;
+                    final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
+                    final file = await File('$dir/$fileName').writeAsBytes(
+                        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+
+                    final stickerData = await rootBundle.load('assets/insta_small.png');
+                    final stickerBuffer = data.buffer;
+                    final stickerFileName = 'insta_small-${DateTime.now().millisecondsSinceEpoch}.png';
+                    final stickerFile = await File('$dir/$stickerFileName').writeAsBytes(
+                        stickerBuffer.asUint8List(stickerData.offsetInBytes, stickerData.lengthInBytes));
+
+                    MdInstaFbShare.shareFBStory(
+                        file.path,
+                        stickerImage: stickerFile.path,
+                        backgroundTopColor: '#FF0000', // red
+                        backgroundBottomColor: '#2DFF00', // green
+                        contentURL: 'http://google.com'
+                    );
+                  },
+                  child: const Text('Test FB story share')
               ),
               Image.asset('assets/insta_big.png', width: 150, fit: BoxFit.fitWidth)
             ],
