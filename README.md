@@ -130,13 +130,13 @@ class _MyAppState extends State<MyApp> {
 ```xml
 <!--Info.plist-->
 <key>FacebookAppID</key>
-<string>{Your-APP-ID}</string>
+<string>{Your-FB-APP-ID}</string>
 <key>CFBundleURLTypes</key>
 <array>
 <dict>
     <key>CFBundleURLSchemes</key>
     <array>
-        <string>fb{Your-APP-ID}</string>
+        <string>fb{Your-FB-APP-ID}</string>
     </array>
 </dict>
 </array>
@@ -194,11 +194,20 @@ import FBSDKCoreKit <-- add this
 <!--inside /android/src/main/AndroidManifest.xml-->
 <application>
 <!--your code-->
-<provider android:authorities="com.facebook.app.FacebookContentProvider{FBApplicationID}"
+<provider android:authorities="com.facebook.app.FacebookContentProvider{Your-FB-APP-ID}"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
+
+<meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" />
 <!--your code-->
 </application>
+```
+
+```xml
+<!--app/src/main/res/values/strings.xml-->
+<string name="facebook_app_id">{Your FB app ID}</string>
 ```
 
 
