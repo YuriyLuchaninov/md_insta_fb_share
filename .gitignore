@@ -1,7 +1,10 @@
 .DS_Store
 .dart_tool/
+.idea/
+android/.idea
 
 .packages
 .pub/
 
 build/
+md_insta_fb_share.iml
