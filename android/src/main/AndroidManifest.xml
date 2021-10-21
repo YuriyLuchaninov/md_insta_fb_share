@@ -1,3 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.mdinstafbshare.md_insta_fb_share">
+    package="com.mdinstafbshare.md_insta_fb_share">
+
+    <application>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.mdInstaFbShare.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+    </application>
+
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.facebook.katana" />
+        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" /> <!-- allows app to access Facebook app features -->
+    </queries>
 </manifest>
