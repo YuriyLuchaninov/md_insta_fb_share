@@ -128,6 +128,7 @@ class _MyAppState extends State<MyApp> {
 
 ## iOS
 ```xml
+<!--Info.plist-->
 <key>FacebookAppID</key>
 <string>{Your-APP-ID}</string>
 <key>CFBundleURLTypes</key>
