@@ -127,6 +127,12 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           
           shareDialog.mode = .automatic
           result(nil);
+      } else if (call.method == "check_insta") {
+          let urlScheme = URL(string: "instagram-stories://app")!
+          result(UIApplication.shared.canOpenURL(urlScheme));
+      } else if (call.method == "check_FB") {
+          let urlScheme = URL(string: "facebook-stories://app")!
+          result(UIApplication.shared.canOpenURL(urlScheme));
       } else {
           result("Not implemeted");
       }

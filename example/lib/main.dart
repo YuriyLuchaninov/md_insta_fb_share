@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -82,7 +83,35 @@ class _MyAppState extends State<MyApp> {
                   },
                   child: const Text('Test FB feed share')
               ),
-              Image.asset('assets/insta_big.png', width: 150, fit: BoxFit.fitWidth)
+              Image.asset('assets/insta_big.png', width: 150, fit: BoxFit.fitWidth),
+              Row(
+                children: [
+                  const Text('FB App available: '),
+                  FutureBuilder(
+                    future: MdInstaFbShare.checkFBInstalled(),
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text('${snapshot.data}');
+                      }
+                      return Container();
+                    },
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Insta App available: '),
+                  FutureBuilder(
+                    future: MdInstaFbShare.checkInstaInstalled(),
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text('${snapshot.data}');
+                      }
+                      return Container();
+                    },
+                  )
+                ],
+              )
             ],
           )
         ),
