@@ -1,7 +1,8 @@
 name: md_insta_fb_share
 description: A new flutter plugin project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/igorbaranovmd/md_insta_fb_share
+publish_to: https://pub.dartlang.org/
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
