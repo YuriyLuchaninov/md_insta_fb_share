@@ -24,7 +24,19 @@ class MdInstaFbShare {
     "backgroundImage": backgroundImagePath
   });
 
-  static Future<bool?> checkFBInstalled() => _channel.invokeMethod('check_FB');
+  static Future<bool> checkFBInstalled() async {
+    final check = await _channel.invokeMethod('check_FB');
+    if (check == null) {
+      throw Exception("Platform error");
+    }
+    return check;
+  }
 
-  static Future<bool?> checkInstaInstalled() => _channel.invokeMethod('check_insta');
+  static Future<bool> checkInstaInstalled() async {
+    final check = await _channel.invokeMethod('check_insta');
+    if (check == null) {
+      throw Exception("Platform error");
+    }
+    return check;
+  }
 }
