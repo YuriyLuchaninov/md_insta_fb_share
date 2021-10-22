@@ -55,7 +55,7 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
         
               let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
               if (isBackgroundImageExist) {
-                  postImageToInstagram(UIImage(contentsOfFile: backgroundImagePath)!);
+                  postImageToInstagram(UIImage(contentsOfFile: backgroundImagePath)!, completion: result);
                   result(nil);
               }
           } else {
@@ -92,7 +92,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   let pasteboardOptions = [UIPasteboard.OptionsKey.expirationDate : NSDate().addingTimeInterval(60 * 5)]
                   UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
                   UIApplication.shared.open(urlScheme, options: [:], completionHandler: { (success) in
-                      result(nil);
+                      if (success) {
+                          result(nil);
+                      } else {
+                          result("FB app openning error");
+                      }
                   })
               } else {
                   UIPasteboard.general.items = [pasteboardItems]
@@ -105,6 +109,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
       } else if (call.method == "share_FB_feed") {
           let args = (call.arguments as! NSDictionary)
           let backgroundImagePath = args["backgroundImage"] as! String;
+          
+          let urlScheme = URL(string: "facebook-stories://app")!
+          if (!UIApplication.shared.canOpenURL(urlScheme)) {
+              return result("FB app not found");
+          }
           
           var backgroundImage: UIImage? = nil;
           let fileManager = FileManager.default;
@@ -134,16 +143,20 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           let urlScheme = URL(string: "facebook-stories://app")!
           result(UIApplication.shared.canOpenURL(urlScheme));
       } else {
-          result("Not implemeted");
+          result("Not implemented");
       }
   }
-    func postImageToInstagram(_ image: UIImage) {
+    func postImageToInstagram(_ image: UIImage, completion: @escaping (Any) -> ()) {
         if UIApplication.shared.canOpenURL(URL(string: "instagram://app")!) {
             PHPhotoLibrary.requestAuthorization { status in
                 if status == .authorized {
                     UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                } else {
+                    completion("Photo library error");
                 }
             }
+        } else {
+            completion("Instagram app not found");
         }
     }
 
@@ -167,7 +180,6 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                     UIApplication.shared.openURL(URL(string: u)!);
                 }
             }
-            else { print("Please install the Instagram application") }
         }
     }
     
