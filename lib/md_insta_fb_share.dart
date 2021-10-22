@@ -24,7 +24,7 @@ class MdInstaFbShare {
     "backgroundImage": backgroundImagePath
   });
 
-  static Future<bool?> checkFBInstalled() => _channel.invokeMethod('check_insta');
+  static Future<bool?> checkFBInstalled() => _channel.invokeMethod('check_FB');
 
-  static Future<bool?> checkInstaInstalled() => _channel.invokeMethod('check_FB');
+  static Future<bool?> checkInstaInstalled() => _channel.invokeMethod('check_insta');
 }

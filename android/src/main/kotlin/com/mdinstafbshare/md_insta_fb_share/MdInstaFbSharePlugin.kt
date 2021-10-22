@@ -104,6 +104,10 @@ class MdInstaFbSharePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
             }
 
+            "check_insta" -> result.success(checkAppInstalled(INSTAGRAM_PACKAGE_NAME))
+
+            "check_FB" -> result.success(checkAppInstalled(FB_PACKAGE_NAME))
+
             else -> result.notImplemented();
         }
     }
