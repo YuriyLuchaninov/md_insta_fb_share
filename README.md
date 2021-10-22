@@ -238,6 +238,12 @@ import FBSDKCoreKit <-- add this
 <string name="facebook_app_id">{Your FB app ID}</string>
 ```
 
+```xml
+<!--app/src/main/build.gradle-->
+dependencies {
+    implementation 'com.facebook.android:facebook-share:latest.release'
+}
+```
 
 
 ## Getting Started
