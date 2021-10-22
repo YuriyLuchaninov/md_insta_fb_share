@@ -28,7 +28,8 @@ To use this plugin :
     md_insta_fb_share:
 ```
 
-### Player Controls
+### Example
+## Share methods return `String` if error and `null` if success
 
 ```dart
 import 'dart:io';
