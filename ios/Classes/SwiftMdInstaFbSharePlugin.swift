@@ -56,7 +56,8 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
               let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
               if (isBackgroundImageExist) {
                   postImageToInstagram(UIImage(contentsOfFile: backgroundImagePath)!, completion: result);
-                  result(nil);
+              } else {
+                  result("Photo not found");
               }
           } else {
               result("Can not open insagram app");
@@ -143,11 +144,12 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           result("Not implemented");
       }
   }
-    func postImageToInstagram(_ image: UIImage, completion: @escaping (Any) -> ()) {
+    func postImageToInstagram(_ image: UIImage, completion: @escaping FlutterResult) {
         if UIApplication.shared.canOpenURL(URL(string: "instagram://app")!) {
             PHPhotoLibrary.requestAuthorization { status in
                 if status == .authorized {
                     UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                    completion(nil);
                 } else {
                     completion("Photo library error");
                 }

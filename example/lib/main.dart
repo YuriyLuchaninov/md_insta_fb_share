@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
                   final file = await File('$dir/$fileName').writeAsBytes(
                       buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
-                  MdInstaFbShare.shareInstaStory(file.path);
+                  print(await MdInstaFbShare.shareInstaStory(file.path));
                 },
                 child: const Text('Test insta story share')
               ),
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                     final file = await File('$dir/$fileName').writeAsBytes(
                         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
-                    MdInstaFbShare.shareInstaFeed(file.path);
+                    print(await MdInstaFbShare.shareInstaFeed(file.path));
                   },
                   child: const Text('Test insta feed share')
               ),
@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
                     final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
                     final file = await File('$dir/$fileName').writeAsBytes(
                         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-                    MdInstaFbShare.shareFBStory(file.path);
+                    print(await MdInstaFbShare.shareFBStory(file.path));
                   },
                   child: const Text('Test FB story share')
               ),
@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
                     final fileName = 'insta_big-${DateTime.now().millisecondsSinceEpoch}.png';
                     final file = await File('$dir/$fileName').writeAsBytes(
                         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-                    MdInstaFbShare.shareFBFeed(file.path);
+                    print(await MdInstaFbShare.shareFBFeed(file.path));
                   },
                   child: const Text('Test FB feed share')
               ),
