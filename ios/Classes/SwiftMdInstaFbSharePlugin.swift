@@ -131,10 +131,7 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           content.photos = [photo];
           
           let viewController = UIApplication.shared.delegate?.window??.rootViewController;
-          let shareDialog = ShareDialog()
-          ShareDialog(fromViewController: viewController, content: content, delegate: self).show()
-          
-          shareDialog.mode = .automatic
+          ShareDialog(viewController: viewController, content: content, delegate: self).show()
           result(nil);
       } else if (call.method == "check_insta") {
           let urlScheme = URL(string: "instagram-stories://app")!
