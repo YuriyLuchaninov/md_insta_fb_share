@@ -2,6 +2,9 @@ import Flutter
 import UIKit
 import FBSDKCoreKit
 
+let FBMarketURL = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id284882215");
+let INSTAMarketURL = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id389801252");
+
 public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "md_insta_fb_share", binaryMessenger: registrar.messenger())
@@ -48,6 +51,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   result(0);
               }
           } else {
+              if #available(iOS 10.0, *) {
+                  UIApplication.shared.open(INSTAMarketURL!, options: [:], completionHandler: { (success) in })
+              } else {
+                  UIApplication.shared.openURL(INSTAMarketURL!)
+              }
               result(1);
           }
       } else if (call.method == "share_insta_feed") {
@@ -65,6 +73,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   result(2);
               }
           } else {
+              if #available(iOS 10.0, *) {
+                  UIApplication.shared.open(INSTAMarketURL!, options: [:], completionHandler: { (success) in })
+              } else {
+                  UIApplication.shared.openURL(INSTAMarketURL!)
+              }
               result(1);
           }
       } else if (call.method == "share_FB_story") {
@@ -113,6 +126,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   result(0);
               }
           } else {
+              if #available(iOS 10.0, *) {
+                  UIApplication.shared.open(FBMarketURL!, options: [:], completionHandler: { (success) in })
+              } else {
+                  UIApplication.shared.openURL(FBMarketURL!)
+              }
               result(1);
           }
       } else if (call.method == "share_FB_feed") {
@@ -121,6 +139,11 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           
           let urlScheme = URL(string: "facebook-stories://app")!
           if (!UIApplication.shared.canOpenURL(urlScheme)) {
+              if #available(iOS 10.0, *) {
+                  UIApplication.shared.open(FBMarketURL!, options: [:], completionHandler: { (success) in })
+              } else {
+                  UIApplication.shared.openURL(FBMarketURL!)
+              }
               return result(1);
           }
           
@@ -188,7 +211,14 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                 } else {
                     UIApplication.shared.openURL(URL(string: u)!);
                 }
+            } else {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(INSTAMarketURL!, options: [:], completionHandler: { (success) in })
+                } else {
+                    UIApplication.shared.openURL(INSTAMarketURL!)
+                }
             }
+            
         }
     }
     

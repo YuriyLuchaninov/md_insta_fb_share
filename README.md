@@ -33,7 +33,7 @@ To use this plugin :
 ```dart
 ShareStatus {
   success, // asset successfully sent to the share app (share app may not have persmissions which may throw an error inside share app)
-  appCanNotBeOpenedError,  // share app can not be opened for some reason
+  appCanNotBeOpenedError,  // share app can not be opened for some reason (app will be opened on store)
   imageNotFoundError, // can not find asset
   galleryAccessError, // can not save image in image gallery (requires for insta feed share)
   unknownError // unknown error
