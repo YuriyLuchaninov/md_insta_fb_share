@@ -29,7 +29,16 @@ To use this plugin :
 ```
 
 ### Example
-## Share methods return `String` if error and `null` if success
+## Share methods return `ShareStatus`
+```dart
+ShareStatus {
+  success, // asset successfully sent to the share app (share app may not have persmissions which may throw an error inside share app)
+  appCanNotBeOpenedError,  // share app can not be opened for some reason
+  imageNotFoundError, // can not find asset
+  galleryAccessError, // can not save image in image gallery (requires for insta feed share)
+  unknownError // unknown error
+}
+```
 
 ```dart
 import 'dart:io';

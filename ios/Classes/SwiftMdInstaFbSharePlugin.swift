@@ -23,6 +23,9 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
               let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
               if (isBackgroundImageExist) {
                   backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
+              } else {
+                  result(2);
+                  return;
               }
               
               let pasteboardItems = [
@@ -33,15 +36,19 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   let pasteboardOptions = [UIPasteboard.OptionsKey.expirationDate : NSDate().addingTimeInterval(60 * 5)]
                   UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
                   UIApplication.shared.open(urlScheme, options: [:], completionHandler: { (success) in
-                      result(nil);
+                      if (success) {
+                          result(0);
+                      } else {
+                          result(1);
+                      }
                   })
               } else {
                   UIPasteboard.general.items = [pasteboardItems]
                   UIApplication.shared.openURL(urlScheme)
-                  result(nil);
+                  result(0);
               }
           } else {
-              result("Can not open insagram app");
+              result(1);
           }
       } else if (call.method == "share_insta_feed") {
           let args = (call.arguments as! NSDictionary);
@@ -49,18 +56,16 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           if (UIApplication.shared.canOpenURL(urlScheme)) {
               let backgroundImagePath = args["backgroundImage"] as! String;
             
-              
               let fileManager = FileManager.default;
               
-        
               let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
               if (isBackgroundImageExist) {
                   postImageToInstagram(UIImage(contentsOfFile: backgroundImagePath)!, completion: result);
               } else {
-                  result("Photo not found");
+                  result(2);
               }
           } else {
-              result("Can not open insagram app");
+              result(1);
           }
       } else if (call.method == "share_FB_story") {
           let args = (call.arguments as! NSDictionary)
@@ -75,12 +80,15 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
               let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
               if (isBackgroundImageExist) {
                   backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
+              } else {
+                  return result(2);
               }
               
               let facebookAppID = Bundle.main.object(forInfoDictionaryKey: "FacebookAppID") as? String;
               
               if (facebookAppID == nil) {
-                  result("FacebookAppID not specified in info.plist");
+                  print("FacebookAppID not specified in info.plist");
+                  result(4);
                   return;
               }
               
@@ -94,18 +102,18 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
                   UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
                   UIApplication.shared.open(urlScheme, options: [:], completionHandler: { (success) in
                       if (success) {
-                          result(nil);
+                          result(0);
                       } else {
-                          result("FB app openning error");
+                          result(1);
                       }
                   })
               } else {
                   UIPasteboard.general.items = [pasteboardItems]
                   UIApplication.shared.openURL(urlScheme)
-                  result(nil);
+                  result(0);
               }
           } else {
-              result("Can not open FB app");
+              result(1);
           }
       } else if (call.method == "share_FB_feed") {
           let args = (call.arguments as! NSDictionary)
@@ -113,7 +121,7 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           
           let urlScheme = URL(string: "facebook-stories://app")!
           if (!UIApplication.shared.canOpenURL(urlScheme)) {
-              return result("FB app not found");
+              return result(1);
           }
           
           var backgroundImage: UIImage? = nil;
@@ -122,6 +130,8 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           let isBackgroundImageExist = fileManager.fileExists(atPath: backgroundImagePath);
           if (isBackgroundImageExist) {
               backgroundImage = UIImage(contentsOfFile: backgroundImagePath)!;
+          } else {
+              return result(1);
           }
           
           let photo = SharePhoto(
@@ -133,7 +143,7 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
           
           let viewController = UIApplication.shared.delegate?.window??.rootViewController;
           ShareDialog(viewController: viewController, content: content, delegate: self).show()
-          result(nil);
+          result(0);
       } else if (call.method == "check_insta") {
           let urlScheme = URL(string: "instagram-stories://app")!
           result(UIApplication.shared.canOpenURL(urlScheme));
@@ -149,13 +159,13 @@ public class SwiftMdInstaFbSharePlugin: NSObject, FlutterPlugin, SharingDelegate
             PHPhotoLibrary.requestAuthorization { status in
                 if status == .authorized {
                     UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                    completion(nil);
+                    completion(0);
                 } else {
-                    completion("Photo library error");
+                    completion(3);
                 }
             }
         } else {
-            completion("Instagram app not found");
+            completion(1);
         }
     }
 

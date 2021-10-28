@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:md_insta_fb_share/md_insta_fb_share.dart';
 import 'package:path_provider/path_provider.dart';
