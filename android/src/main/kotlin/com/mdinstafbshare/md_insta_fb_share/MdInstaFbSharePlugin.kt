@@ -46,7 +46,12 @@ class MdInstaFbSharePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         when (call.method) {
             "share_insta_story" -> {
                 if (checkAppInstalled(INSTAGRAM_PACKAGE_NAME)) {
-                    val uri = getPictureUri(call) ?: return
+                    val uri = try {
+                        getPictureUri(call)
+                    } catch (e : Exception) {
+                        result.success(2)
+                        return
+                    }
 
                     val intent = Intent("com.instagram.share.ADD_TO_STORY")
                     intent.setDataAndType(uri, "image/*")
@@ -54,13 +59,20 @@ class MdInstaFbSharePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
 
                     activity.startActivityForResult(intent, 0)
+                    result.success(0)
                 } else {
                     openMissingAppInPlayStore(INSTAGRAM_PACKAGE_NAME)
+                    result.success(1)
                 }
             }
             "share_insta_feed" -> {
                 if (checkAppInstalled(INSTAGRAM_PACKAGE_NAME)) {
-                    val uri = getPictureUri(call) ?: return
+                    val uri = try {
+                        getPictureUri(call)
+                    } catch (e : Exception) {
+                        result.success(2)
+                        return
+                    }
 
                     val intent = Intent("com.instagram.share.ADD_TO_FEED")
                     intent.type = "image/*"
@@ -70,37 +82,53 @@ class MdInstaFbSharePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                     activity.startActivityForResult(intent, 0)
+                    result.success(0)
                 } else {
                     openMissingAppInPlayStore(INSTAGRAM_PACKAGE_NAME)
+                    result.success(1)
                 }
             }
 
             "share_FB_story" -> {
                 if (checkAppInstalled(FB_PACKAGE_NAME)) {
-                    val uri = getPictureUri(call) ?: return
+                    val uri = try {
+                        getPictureUri(call)
+                    } catch (e : Exception) {
+                        result.success(2)
+                        return
+                    }
 
                     val intent = Intent("com.facebook.stories.ADD_TO_STORY")
                     intent.setDataAndType(uri, "image/jpeg")
                     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    val metadata = activity.getPackageManager().getApplicationInfo(activity.getPackageName(),PackageManager.GET_META_DATA).metaData
+                    val metadata = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA).metaData
                     intent.putExtra("com.facebook.platform.extra.APPLICATION_ID", metadata.getString("com.facebook.sdk.ApplicationId"))
 
                     activity.startActivityForResult(intent, 0)
+                    result.success(0)
                 } else {
                     openMissingAppInPlayStore(FB_PACKAGE_NAME)
+                    result.success(1)
                 }
 
             }
 
             "share_FB_feed" -> {
                 if (checkAppInstalled(FB_PACKAGE_NAME)) {
-                    val uri = getPictureUri(call) ?: return
+                    val uri = try {
+                        getPictureUri(call)
+                    } catch (e : Exception) {
+                        result.success(2)
+                        return
+                    }
 
                     val photo = SharePhoto.Builder().setImageUrl(uri).build()
                     val content = SharePhotoContent.Builder().addPhoto(photo).build()
                     ShareDialog.show(activity, content);
+                    result.success(0)
                 } else {
                     openMissingAppInPlayStore(FB_PACKAGE_NAME)
+                    result.success(0)
                 }
             }
 
@@ -112,11 +140,10 @@ class MdInstaFbSharePlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    private fun getPictureUri(call: MethodCall): Uri? {
-        val path = call.argument<String>("backgroundImage")
+    private fun getPictureUri(call: MethodCall): Uri {
+        val path = call.argument<String>("backgroundImage") ?: ""
 
-        return if (path.isNullOrBlank()) null
-        else FileProvider.getUriForFile(activity, activity.packageName + ".mdInstaFbShare.provider", File(path))
+        return FileProvider.getUriForFile(activity, activity.packageName + ".mdInstaFbShare.provider", File(path))
     }
 
     private fun checkAppInstalled(packageName: String): Boolean {
