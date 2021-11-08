@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 enum ShareStatus {
   success, // 0
   appCanNotBeOpenedError, // 1
   imageNotFoundError, // 2
   galleryAccessError, // 3
-  noInternetConnection, //4
   unknownError // other
 }
 
@@ -52,13 +50,9 @@ class MdInstaFbShare {
   }
 
   static Future<ShareStatus> shareFBFeed(String backgroundImagePath) async {
-    if(await InternetConnectionChecker().hasConnection) {
-      return _convertResponseToStatus(
-          await _channel.invokeMethod('share_FB_feed', {"backgroundImage": backgroundImagePath})
-      );
-    }else{
-      return ShareStatus.noInternetConnection;
-    }
+    return _convertResponseToStatus(
+        await _channel.invokeMethod('share_FB_feed', {"backgroundImage": backgroundImagePath })
+    );
   }
 
   static Future<bool> checkFBInstalled() async {
