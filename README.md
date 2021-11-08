@@ -255,6 +255,20 @@ dependencies {
 }
 ```
 
+## Sharing FaceBook feed
+
+Sharing Facebook feed requires available internet connection, nothing will happen if not.
+You can use internet_connection_checker library. It checks exactly if internet access is available.
+
+Example
+```xml
+  if(await InternetConnectionChecker().hasConnection) {
+      MdInstaFbShare.shareFBFeed(file.path);
+  }else{
+      <!--your actions-->
+  }
+```
+
 
 ## Getting Started
 

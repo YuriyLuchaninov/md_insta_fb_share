@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  internet_connection_checker: ^0.0.1+3
 
   md_insta_fb_share:
     # When depending on this package from a real application you should use:
